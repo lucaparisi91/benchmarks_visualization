@@ -1,0 +1,14 @@
+{
+    "tests": [ {
+                    "name" : "benchio",
+                    "environment" : "gnu",
+                    "hash" : "6543yui"
+                }
+            ] , 
+    "jobs":
+    {
+        "hash" : "6543yui",
+        "succesfull" : true,
+        "start_time" : "10-02-2024 16:36:00+00"
+    }
+}
