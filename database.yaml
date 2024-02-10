@@ -1,0 +1,25 @@
+benchmark:
+  value: real
+  metric_id: int
+  job_id: int 
+  benchmark_id: int , auto increment
+
+job:
+  job_id: boolean
+  successful: boolean
+  test_id : int 
+
+test:
+  name: varchar 
+  environmnet: varchar 
+  test_id: test
+
+metric:
+  name: varchar 
+  unit: varchar 
+  thresold_min: real 
+  thresold_max: real 
+  test_id: int 
+
+
+
