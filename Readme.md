@@ -11,18 +11,26 @@ sudo grafana-cli admin reset-admin-password
 
 ## Database 
 
-- Strings should always be used within quotes
+Get startarted by startating the database in the VM
+```
+sudo systemctl start postgresql 
+```
+
+The database was created with the commands 
 
 ```SQL
 CREATE TABLE test ( name varchar(40), environment varchar(40), test_id SERIAL NOT NULL PRIMARY KEY , hash VARCHAR(20) );
-CREATE TABLE metric ( name varchar(40), unit varchar(15), test_id int REFERENCES test(test_id)  );
-CREATE TABLE job ( job_id int, test_id int REFERENCES test(test_id), successfull boolean, start_time timestamp with time zone   );
+CREATE TABLE metric ( name varchar(40), unit varchar(15), test_id int , CONSTRAINT testk FOREIGN KEY(test_id) REFERENCES test (test_id) ON DELETE CASCADE, metric_id SERIAL NOT NULL PRIMARY KEY );
+CREATE TABLE job ( job_id SERIAL NOT NULL PRIMARY KEY, successful boolean, start_time TIMESTAMP WITH TIME ZONE, test_id int, CONSTRAINT testk FOREIGN KEY(test_id) REFERENCES test(test_id)   );
+CREATE TABLE performance ( value DOUBLE PRECISION , metric_id int, job_id int, benchmark_id SERIAL NOT NULL PRIMARY KEY, CONSTRAINT metrick FOREIGN KEY(metric_id) REFERENCES metric, CONSTRAINT jobk FOREIGN KEY(job_id) REFERENCES job ON DELETE CASCADE  );
+ALTER TABLE test ADD CONSTRAINT hash_unique UNIQUE(hash) 
+
+```
+
+```SQL
 INSERT INTO test ( name, environment ) VALUES ('benchio', 'gnu');
 CREATE USER cse PASSWORD cse;
 SELECT usename FROM pg_user;
-GRANT SELECT ON test TO cse;
-GRANT INSERT ON test TO cse;
-GRANT UPDATE ON test TO cse;
+GRANT SELECT, INSERT, UPDATE ON ALL TABLES IN SCHEMA public TO cse;
 GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA public TO cse;
-ALTER TABLE test ADD CONSTRAINT hash_unique UNIQUE(hash)
 ```
