@@ -13,7 +13,7 @@ sudo grafana-cli admin reset-admin-password
 
 ```bash
 cd benchmarks
-podman run -t benchmarks_data .
+podman build -t benchmarks_data .
 ``` 
 
 Create the benchmrks database. Run interactivly the container
