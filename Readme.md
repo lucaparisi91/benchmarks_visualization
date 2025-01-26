@@ -11,35 +11,16 @@ sudo grafana-cli admin reset-admin-password
 
 ## Database 
 
-Install the postgresql database with 
+```bash
+cd benchmarks
+podman run -t benchmarks_data .
+``` 
+
+Create the benchmrks database. Run interactivly the container
 
 ```bash
-sudo dnf install -y postgresql-server
-sudo dnf install -y postgresql
-sudo postgresql-setup --initdb
-sudo systemctl enable postgresql.service
-sudo systemctl start postgresql 
-sudo -u postgres psql postgres
-postgres=# \password postgres
-Enter it again: 
-postgres=# 
-
-sudo reboot
+podman container run --rm -it  benchmarks_data:latest
 ```
-
-Get startarted by startating the database in the VM
-
-```bash
-systemctl start postgresql.service
-```
-
-Create the benchmrks database. Run `sudo -u postgres psql ` to open the database shell
-
-```bash
-sudo -u postgres createdb benchmarks
-
-```
-
 
 The database was created with the commands 
 
@@ -49,7 +30,6 @@ CREATE TABLE metric ( name varchar(40), unit varchar(15), test_id int , CONSTRAI
 CREATE TABLE job ( job_id SERIAL NOT NULL PRIMARY KEY, successful boolean, start_time TIMESTAMP WITH TIME ZONE, test_id int, CONSTRAINT testk FOREIGN KEY(test_id) REFERENCES test(test_id)   );
 CREATE TABLE performance ( value DOUBLE PRECISION , metric_id int, job_id int, benchmark_id SERIAL NOT NULL PRIMARY KEY, CONSTRAINT metrick FOREIGN KEY(metric_id) REFERENCES metric, CONSTRAINT jobk FOREIGN KEY(job_id) REFERENCES job ON DELETE CASCADE  );
 ALTER TABLE test ADD CONSTRAINT hash_unique UNIQUE(hash);
-
 ```
 
 ```SQL

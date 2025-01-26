@@ -1,0 +1,20 @@
+FROM fedora:latest 
+RUN dnf update -y
+RUN dnf group -y install development-tools
+RUN dnf install -y wget icu vim bison flex ghc-readline ghc-readline-devel perl-FindBin "perl-File*" libicu-devel
+RUN mkdir -p /tmp/postgres
+WORKDIR /tmp/postgres
+COPY install_postgres.sh /tmp/postgres
+RUN ./install_postgres.sh
+RUN mkdir -p /usr/local/pgsql/data
+RUN useradd postgres
+RUN chown postgres /usr/local/pgsql/data
+RUN mkdir -p /data/postgres/home
+RUN chown postgres /data/postgres/home
+WORKDIR /data/postgres/home
+USER postgres
+RUN /usr/local/pgsql/bin/initdb -D /usr/local/pgsql/data
+ENV PATH=/usr/local/pgsql/bin:$PATH
+RUN /usr/local/pgsql/bin/pg_ctl -D /usr/local/pgsql/data -l logfile start && createdb benchmarks && /usr/local/pgsql/bin/pg_ctl -D /usr/local/pgsql/data stop
+ENTRYPOINT /usr/local/pgsql/bin/pg_ctl -D /usr/local/pgsql/data -l logfile start && psql benchmarks
+
