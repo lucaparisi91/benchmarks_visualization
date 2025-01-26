@@ -1,9 +1,9 @@
 
 # Visualization of Reframe tests and benchmarking 
 
-The project consists in creating a database ( postgresql ) to hold data from benchmarks. Those benchmarks are then queried from Graphana and a visualization is obtained.]
+The project consists in creating a database ( postgresql ) to hold data from benchmarks. Those benchmarks are then queried from Graphana and a visualization is obtained.
 
-## Graphana
+## Grafana
 
 ```bash
 sudo grafana-cli admin reset-admin-password
@@ -14,7 +14,7 @@ sudo grafana-cli admin reset-admin-password
 ```bash
 cd benchmarks
 podman build -t benchmarks_data .
-``` 
+```
 
 Create the benchmrks database. Run interactivly the container
 
